@@ -25,11 +25,11 @@ public class LadminProtocolUtils {
 
 		String[] array = StringUtils.split(command, null, 3);
 
-		if(array.length < 2) {
+		if(array.length <= 1) {
 			return map;
 		}
 
-		if(array.length < 3) {
+		if(array.length > 1) {
 			map.put("tag", array[0].toLowerCase());
 			map.put("protocol", array[1].toLowerCase());
 		}
@@ -67,18 +67,18 @@ public class LadminProtocolUtils {
 	public static String getBadResponse(String tag, Constants constants) {
 		return getResponse(tag, Constants.BAD.getValue(), constants.getValue());
 	}
-	
+
 	public static String getOkResponse(String tag, String protocol) {
 		return getResponse(tag, Constants.OK.getValue(), protocol);
 	}
-	
+
 	public static String getResponse(String... args) {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		Arrays.asList(args).stream().forEach(list -> {
 			stringBuilder.append(list).append(" ");
 		});
-		
+
 		return stringBuilder.append(Constants.CRLF.getValue()).toString();
 	}
 

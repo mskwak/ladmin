@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-@Component(value="config_syncallwithdb")
+@Component
 public class ConfigSyncAllWithDb implements LadminProtocol {
 
 	@Override

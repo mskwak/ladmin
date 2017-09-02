@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.daou.ladmin.util.LadminProtocolUtils;
 
-@Component(value="quit")
+@Component
 public class Quit implements LadminProtocol {
 
 	@Override
@@ -19,5 +19,9 @@ public class Quit implements LadminProtocol {
 	@Override
 	public boolean isClose() {
 		return true;
+	}
+
+	public Quit() {
+		super();
 	}
 }

@@ -1,12 +1,15 @@
 package com.daou.ladmin.daemon;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.daou.ladmin.config.Constants;
 import com.daou.ladmin.daemon.protocol.LadminProtocol;
+import com.daou.ladmin.daemon.protocol.Protocol;
 import com.daou.ladmin.util.LadminProtocolUtils;
 
 import io.netty.channel.ChannelFuture;
@@ -18,8 +21,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 @Sharable
 @Component
 public class LadminHandler extends SimpleChannelInboundHandler<String> {
-	@Autowired
-	private Map<String, LadminProtocol> ladminProtocolMap;
+	private static final Logger logger = LoggerFactory.getLogger(LadminHandler.class);
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -35,9 +37,15 @@ public class LadminHandler extends SimpleChannelInboundHandler<String> {
 			return;
 		}
 
-		LadminProtocol ladminProtocol = this.ladminProtocolMap.get(map.get("protocol"));
+		String protocolName = map.get("protocol");
+		Map<String, LadminProtocol> protocolMap = Protocol.getMap();
 
-		if(ladminProtocol == null) {
+		LadminProtocol ladminProtocol = null;
+
+		try {
+			ladminProtocol = protocolMap.keySet().stream().filter(str -> protocolName.equals(str)).map(str -> protocolMap.get(str)).findFirst().get();
+		} catch(NoSuchElementException e) {
+			logger.error("NoSuchLadminProtocol", e);
 			ctx.writeAndFlush(LadminProtocolUtils.getBadResponse(map.get("tag"), Constants.INVALID_COMMAND));
 			return;
 		}
