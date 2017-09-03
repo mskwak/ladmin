@@ -23,5 +23,5 @@
 	<!-- 이 태그를 사용하게 되면 @Aspect 어노테이션이 적용딘 빈 객체를 Aspect로 사용하게 된다. -->
 	<aop:aspectj-autoproxy />
 	
-	<!--  <bean id="springContext" class="com.hangugi.SpringContext1" /> -->
+	<bean id="springBean" class="com.daou.ladmin.util.SpringBean" />
 </beans>

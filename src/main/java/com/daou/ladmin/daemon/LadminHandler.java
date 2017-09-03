@@ -39,11 +39,14 @@ public class LadminHandler extends SimpleChannelInboundHandler<String> {
 
 		String protocolName = map.get("protocol");
 		Map<String, LadminProtocol> protocolMap = Protocol.getMap();
-
 		LadminProtocol ladminProtocol = null;
 
 		try {
-			ladminProtocol = protocolMap.keySet().stream().filter(str -> protocolName.equals(str)).map(str -> protocolMap.get(str)).findFirst().get();
+			ladminProtocol = protocolMap.keySet().stream().
+					filter(str -> protocolName.equals(str)).
+					map(str -> protocolMap.get(str)).
+					findFirst().
+					get();
 		} catch(NoSuchElementException e) {
 			logger.error("NoSuchLadminProtocol", e);
 			ctx.writeAndFlush(LadminProtocolUtils.getBadResponse(map.get("tag"), Constants.INVALID_COMMAND));
