@@ -9,11 +9,11 @@ public class SpringBean implements ApplicationContextAware {
 
 	private SpringBean() {}
 
-    public static ApplicationContext getApplicationContext() {
-        return context;
-    }
+//	public static ApplicationContext getApplicationContext() {
+//		return context;
+//	}
 
-    // 누가 메소드 파라미터인 applicationContext에 ApplicationContext를 꽂아주나? 스프링이?
+	// 누가 메소드 파라미터인 applicationContext에 ApplicationContext를 꽂아주나? 스프링이?
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		context = applicationContext;

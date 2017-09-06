@@ -1,10 +1,10 @@
 package com.daou.ladmin.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import com.daou.ladmin.config.Constants;
 
-public class LadminProtocolUtils {
-	private static final Logger logger = LoggerFactory.getLogger(LadminProtocolUtils.class);
-	private LadminProtocolUtils() {}
+public class LadminUtils {
+	private static final Logger logger = LoggerFactory.getLogger(LadminUtils.class);
+	private LadminUtils() {}
 
 	public static Map<String, String> parse(String command) {
 		Map<String, String> map = new HashMap<String, String>();
@@ -83,12 +83,7 @@ public class LadminProtocolUtils {
 	}
 
 	public static String getResponse(Constants... args) {
-		List<String> list = new ArrayList<String>();
-
-		for(Constants constant: args) {
-			list.add(constant.getValue());
-		}
-
+		List<String> list = Arrays.asList(args).stream().map(arg -> arg.getValue()).collect(Collectors.toList());
 		return getResponse(list.toArray(new String[list.size()]));
 	}
 }

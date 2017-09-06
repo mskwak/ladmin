@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.daou.ladmin.config.Constants;
 import com.daou.ladmin.daemon.protocol.LadminProtocol;
 import com.daou.ladmin.daemon.protocol.Protocol;
-import com.daou.ladmin.util.LadminProtocolUtils;
+import com.daou.ladmin.util.LadminUtils;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -25,15 +25,15 @@ public class LadminHandler extends SimpleChannelInboundHandler<String> {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ctx.writeAndFlush(LadminProtocolUtils.getResponse(Constants.GREETING_MESSAGE));
+		ctx.writeAndFlush(LadminUtils.getResponse(Constants.GREETING_MESSAGE));
 	}
 
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, String command) throws Exception {
-		Map<String, String> map = LadminProtocolUtils.parse(command);
+		Map<String, String> map = LadminUtils.parse(command);
 
 		if(map.isEmpty()) {
-			ctx.writeAndFlush(LadminProtocolUtils.getBadResponse(Constants.INVALID_COMMAND));
+			ctx.writeAndFlush(LadminUtils.getBadResponse(Constants.INVALID_COMMAND));
 			return;
 		}
 
@@ -45,11 +45,11 @@ public class LadminHandler extends SimpleChannelInboundHandler<String> {
 			ladminProtocol = protocolMap.keySet().stream().
 					filter(str -> protocolName.equals(str)).
 					map(str -> protocolMap.get(str)).
-					findFirst().
+					findAny().
 					get();
 		} catch(NoSuchElementException e) {
 			logger.error("NoSuchLadminProtocol", e);
-			ctx.writeAndFlush(LadminProtocolUtils.getBadResponse(map.get("tag"), Constants.INVALID_COMMAND));
+			ctx.writeAndFlush(LadminUtils.getBadResponse(map.get("tag"), Constants.INVALID_COMMAND));
 			return;
 		}
 

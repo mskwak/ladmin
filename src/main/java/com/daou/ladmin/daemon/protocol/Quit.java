@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.daou.ladmin.util.LadminProtocolUtils;
+import com.daou.ladmin.util.LadminUtils;
 
 @Component
 public class Quit implements LadminProtocol {
@@ -13,7 +13,7 @@ public class Quit implements LadminProtocol {
 	public String execute(Map<String, String> map) {
 		String tag = map.get("tag");
 		String protocol = map.get("protocol");
-		return LadminProtocolUtils.getOkResponse(tag, protocol);
+		return LadminUtils.getOkResponse(tag, protocol);
 	}
 
 	@Override
