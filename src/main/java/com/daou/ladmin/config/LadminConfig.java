@@ -1,13 +1,23 @@
 package com.daou.ladmin.config;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import com.daou.ladmin.Test;
+import com.daou.ladmin.service.log.Log;
 
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.string.StringDecoder;
@@ -15,8 +25,14 @@ import io.netty.handler.codec.string.StringEncoder;
 
 @Configuration
 @ComponentScan("com.daou.ladmin")
-@PropertySource("classpath:ladmin-config.properties")
+@PropertySources({
+	@PropertySource("classpath:ladmin-config.properties")
+})
 public class LadminConfig {
+	private static final Logger logger = LoggerFactory.getLogger(LadminConfig.class);
+
+	private static final String BASEDIR = "/opt/TerraceTims";
+
 	@Value("${base.dir}") private String baseDir;
 	@Value("${boss.thread.count}") private int bossCount;
 	@Value("${worker.thread.count}") private int workerCount;
@@ -69,6 +85,12 @@ public class LadminConfig {
 		return new NioEventLoopGroup(this.workerCount);
 	}
 
+	@Bean(name = "executorService", destroyMethod = "shutdownNow")
+	public ExecutorService executorService() {
+		//return Executors.newCachedThreadPool();
+		return Executors.newFixedThreadPool(Log.INSTANCE.getCount());
+	}
+
 //	@Bean(name = "readTimeoutHandler")
 //	public ReadTimeoutHandler readTimeoutHandler() {
 //		return new ReadTimeoutHandler(this.bossIoTimeout);
@@ -84,10 +106,23 @@ public class LadminConfig {
 //		return new LineBasedFrameDecoder(1024 * 64);
 //	}
 
-	@Bean(name = "test")
-	public Test test() {
-		return new Test(this.bossIoTimeout);
+	public String getLogDir() {
+		File file = new File(getBaseDir() + "/config/log.config");
+		try {
+			return FileUtils.readLines(file, "UTF-8").stream().filter(line -> StringUtils.startsWithIgnoreCase(line, "basedir")).map(line -> {
+				String[] str = StringUtils.split(line, null, 2);
+				return str[1];
+			}).findAny().get();
+		} catch (IOException e) {
+			logger.error("", e);
+		}
+		return BASEDIR + "/log";
 	}
+
+//	@Bean(name = "test")
+//	public Test test() {
+//		return new Test(this.bossIoTimeout);
+//	}
 
 	@Bean(name = "stringDecoder")
 	public StringDecoder stringDecoder() {

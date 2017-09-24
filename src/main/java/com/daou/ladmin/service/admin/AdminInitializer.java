@@ -1,4 +1,4 @@
-package com.daou.ladmin.daemon;
+package com.daou.ladmin.service.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 
 @Component
-public class LadminInitializer extends ChannelInitializer<SocketChannel> {
+public class AdminInitializer extends ChannelInitializer<SocketChannel> {
 /*	아래 3개의 클래스에 대해서는 @Sharable 지정 불가
  *  io.netty.channel.ChannelPipelineException: io.netty.handler.timeout.ReadTimeoutHandler is not a @Sharable handler, so can't be added or removed multiple times.
  *  @Autowired
@@ -34,7 +34,7 @@ public class LadminInitializer extends ChannelInitializer<SocketChannel> {
 	private LadminConfig ladminConfig;
 
 	@Autowired
-	private LadminHandler ladminHandler;
+	private AdminHandler ladminHandler;
 
 	@Autowired
 	private StringEncoder stringEncoder;

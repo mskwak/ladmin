@@ -1,4 +1,4 @@
-package com.daou.ladmin.daemon.protocol;
+package com.daou.ladmin.service.admin.protocol;
 
 import java.util.Map;
 

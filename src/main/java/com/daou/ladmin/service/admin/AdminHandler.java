@@ -1,4 +1,4 @@
-package com.daou.ladmin.daemon;
+package com.daou.ladmin.service.admin;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.daou.ladmin.config.Constants;
-import com.daou.ladmin.daemon.protocol.LadminProtocol;
-import com.daou.ladmin.daemon.protocol.Protocol;
+import com.daou.ladmin.service.admin.protocol.LadminProtocol;
+import com.daou.ladmin.service.admin.protocol.Protocol;
 import com.daou.ladmin.util.LadminUtils;
 
 import io.netty.channel.ChannelFuture;
@@ -20,8 +20,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 @Sharable
 @Component
-public class LadminHandler extends SimpleChannelInboundHandler<String> {
-	private static final Logger logger = LoggerFactory.getLogger(LadminHandler.class);
+public class AdminHandler extends SimpleChannelInboundHandler<String> {
+	private static final Logger logger = LoggerFactory.getLogger(AdminHandler.class);
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -42,11 +42,12 @@ public class LadminHandler extends SimpleChannelInboundHandler<String> {
 		LadminProtocol ladminProtocol = null;
 
 		try {
-			ladminProtocol = protocolMap.keySet().stream().
-					filter(str -> protocolName.equals(str)).
-					map(str -> protocolMap.get(str)).
-					findAny().
-					get();
+			ladminProtocol = protocolMap.keySet()
+				.stream()
+				.filter(str -> protocolName.equals(str))
+				.map(str -> protocolMap.get(str))
+				.findAny()
+				.get();
 		} catch(NoSuchElementException e) {
 			logger.error("NoSuchLadminProtocol", e);
 			ctx.writeAndFlush(LadminUtils.getBadResponse(map.get("tag"), Constants.INVALID_COMMAND));
@@ -60,5 +61,12 @@ public class LadminHandler extends SimpleChannelInboundHandler<String> {
 		if(ladminProtocol.isClose()) {
 			channelFuture.addListener(ChannelFutureListener.CLOSE);
 		}
+	}
+
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)	throws Exception {
+		logger.error("", cause);
+		ctx.writeAndFlush(LadminUtils.getBadResponse(Constants.INVALID_COMMAND));
+		return;
 	}
 }

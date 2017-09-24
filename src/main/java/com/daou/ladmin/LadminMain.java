@@ -11,13 +11,13 @@ public class LadminMain {
 	public static void main(String[] args) throws InterruptedException {
 		String configLocation = "classpath:/ladmin.xml";
 		FileSystemXmlApplicationContext fileSystemXmlApplicationContext = new FileSystemXmlApplicationContext(configLocation);
-		LadminService ladminService = fileSystemXmlApplicationContext.getBean(LadminService.class);
+		LaunchService launchService = fileSystemXmlApplicationContext.getBean(LaunchService.class);
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			ladminService.stopService();
+			launchService.stop();
 			fileSystemXmlApplicationContext.close();
 		}));
 
-		ladminService.startService();
+		launchService.launch();
 	}
 }
