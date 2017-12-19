@@ -1,7 +1,7 @@
 package com.daou.ladmin.service.admin;
 
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.daou.ladmin.config.Constants;
 import com.daou.ladmin.service.admin.protocol.LadminProtocol;
 import com.daou.ladmin.service.admin.protocol.Protocol;
-import com.daou.ladmin.util.LadminUtils;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -25,15 +24,21 @@ public class AdminHandler extends SimpleChannelInboundHandler<String> {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ctx.writeAndFlush(LadminUtils.getResponse(Constants.GREETING_MESSAGE));
+		ctx.writeAndFlush(LadminProtocol.getResponse(Constants.GREETING_MESSAGE));
 	}
 
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, String command) throws Exception {
-		Map<String, String> map = LadminUtils.parse(command);
+
+//		if(command.isReadable()) {
+//			System.out.println("oooooooooooooookkkkkkkkkkkkkkkkkkk");
+//		}
+//		Map<String, String> map = LadminUtils.parse(command.toString(Charset.forName("UTF-8")));
+
+		Map<String, String> map = LadminProtocol.parse(command);
 
 		if(map.isEmpty()) {
-			ctx.writeAndFlush(LadminUtils.getBadResponse(Constants.INVALID_COMMAND));
+			ctx.writeAndFlush(LadminProtocol.getBadResponse(Constants.INVALID_COMMAND));
 			return;
 		}
 
@@ -41,16 +46,28 @@ public class AdminHandler extends SimpleChannelInboundHandler<String> {
 		Map<String, LadminProtocol> protocolMap = Protocol.getMap();
 		LadminProtocol ladminProtocol = null;
 
-		try {
-			ladminProtocol = protocolMap.keySet()
-				.stream()
+//		try {
+//			ladminProtocol = protocolMap.keySet()
+//				.stream()
+//				.filter(str -> protocolName.equals(str))
+//				.map(str -> protocolMap.get(str))
+//				.findAny()
+//				.get()
+//		} catch(NoSuchElementException e) {
+//			logger.error("NoSuchLadminProtocol", e);
+//			ctx.writeAndFlush(LadminUtils.getBadResponse(map.get("tag"), Constants.INVALID_COMMAND));
+//			return;
+//		}
+
+		Optional<LadminProtocol> l = protocolMap.keySet().stream()
 				.filter(str -> protocolName.equals(str))
 				.map(str -> protocolMap.get(str))
-				.findAny()
-				.get();
-		} catch(NoSuchElementException e) {
-			logger.error("NoSuchLadminProtocol", e);
-			ctx.writeAndFlush(LadminUtils.getBadResponse(map.get("tag"), Constants.INVALID_COMMAND));
+				.findAny();
+
+		if(l.isPresent()) {
+			ladminProtocol = l.get();
+		} else {
+			ctx.writeAndFlush(LadminProtocol.getBadResponse(map.get("tag"), Constants.INVALID_COMMAND));
 			return;
 		}
 
@@ -66,7 +83,7 @@ public class AdminHandler extends SimpleChannelInboundHandler<String> {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)	throws Exception {
 		logger.error("", cause);
-		ctx.writeAndFlush(LadminUtils.getBadResponse(Constants.INVALID_COMMAND));
+		ctx.writeAndFlush(LadminProtocol.getBadResponse(Constants.INVALID_COMMAND));
 		return;
 	}
 }

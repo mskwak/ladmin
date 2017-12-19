@@ -5,7 +5,6 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.daou.ladmin.config.Constants;
-import com.daou.ladmin.util.LadminUtils;
 
 @Component
 public class Help implements LadminProtocol {
@@ -20,7 +19,7 @@ public class Help implements LadminProtocol {
 		String tag = map.get("tag");
 		String protocol = map.get("protocol");
 
-		return sb.append(LadminUtils.getOkResponse(tag, protocol)).toString();
+		return sb.append(LadminProtocol.getOkResponse(tag, protocol)).toString();
 	}
 
 	@Override

@@ -3,7 +3,12 @@ package com.daou.ladmin.service.log;
 import java.io.Closeable;
 import java.io.IOException;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.daou.ladmin.repository.MemberRepository;
 /*
  * archive
  * 	- process: 5, parent 1, child 4
@@ -22,7 +27,6 @@ import org.springframework.stereotype.Component;
  * 	- logdir: mta, mss, remote, imap, pop, catalina/webmail, webmail(사용 안하고 있음)
  */
 @Component
-//@Scope(value = "prototype")
 public class LogReader implements Parsable, Traceable, Closeable, Runnable {
 //	private final String logDir;
 //
@@ -33,15 +37,21 @@ public class LogReader implements Parsable, Traceable, Closeable, Runnable {
 	//@Autowired
 	//private Log log;
 
-	@Override
-	public void getTrace() {
-		// TODO Auto-generated method stub
-	}
+	@Autowired
+	private MemberRepository memberRepository;
 
-	@Override
-	public void setTrace() {
-		// TODO Auto-generated method stub
-	}
+//	@Autowired
+//	private Member member;
+
+//	@Override
+//	public void getTrace() {
+//		// TODO Auto-generated method stub
+//	}
+//
+//	@Override
+//	public void setTrace() {
+//		// TODO Auto-generated method stub
+//	}
 
 	@Override
 	public void parse() {
@@ -53,17 +63,29 @@ public class LogReader implements Parsable, Traceable, Closeable, Runnable {
 	}
 
 	@Override
+	@Transactional
 	public void run() {
-		// TODO Auto-generated method stub
-		System.out.println("x:" + Log.INSTANCE.getLog());
-		while(true) {
-			//System.out.println(Thread.currentThread().getName() + ":::::::::::::::::::::::::::");
+		String log = Log.INSTANCE.getLog();
 
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		while(true) {
+//			System.out.println("x:" + log);
+//			getTrace(log);
+//			parse();
+//			setTrace(log);
+			System.out.println(Thread.currentThread().getName() + ":::::::::::::::::::::::::::" + log);
+//
+//			for(long i = 1; i < 30; i++) {
+//				Member member = new Member();
+//				member.setId(i);
+//				member.setUserName("mskw");
+//				member.setEmailId("mskw@daou.co.kr");
+//				memberRepository.save(member);
+//				TimeUtils.sleepSecond(1);
+//			}
+//
+//			break;
+//			//Xxx x = new Xxx();
+//			//x.xxx();
 		}
 	}
 }

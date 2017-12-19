@@ -1,6 +1,11 @@
 package com.daou.ladmin.service.log;
 
 public interface Traceable {
-	public void getTrace();
-	public void setTrace();
+	public default void getTrace(String log) {
+
+	}
+
+	public default void setTrace(String log) {
+
+	}
 }

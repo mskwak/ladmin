@@ -34,7 +34,7 @@ public class AdminInitializer extends ChannelInitializer<SocketChannel> {
 	private LadminConfig ladminConfig;
 
 	@Autowired
-	private AdminHandler ladminHandler;
+	private AdminHandler adminHandler;
 
 	@Autowired
 	private StringEncoder stringEncoder;
@@ -51,6 +51,6 @@ public class AdminInitializer extends ChannelInitializer<SocketChannel> {
 		pipeline.addLast(new LineBasedFrameDecoder(64 * 1024));
 		pipeline.addLast(this.stringEncoder);
 		pipeline.addLast(this.stringDecoder);
-		pipeline.addLast(this.ladminHandler);
+		pipeline.addLast(this.adminHandler);
 	}
 }

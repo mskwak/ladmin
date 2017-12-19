@@ -14,6 +14,10 @@ public class Protocol {
 		map.put("help", SpringBean.getBean(Help.class));
 		map.put("quit", SpringBean.getBean(Quit.class));
 		map.put("config_syncallwithdb", SpringBean.getBean(ConfigSyncAllWithDb.class));
+		map.put("config_syncwithdb", SpringBean.getBean(ConfigSyncWithDb.class));
+		map.put("custom_pkg_file_upload", SpringBean.getBean(CustomPkgFileUpload.class));
+		map.put("custom_pkg_patch", SpringBean.getBean(CustomPkgPatch.class));
+		map.put("domain_delete", SpringBean.getBean(DomainDelete.class));
 	}
 
 	public static Map<String, LadminProtocol> getMap() {
