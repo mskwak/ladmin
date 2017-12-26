@@ -2,19 +2,27 @@ package com.daou.ladmin.service.admin.protocol;
 
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.daou.ladmin.config.Constants;
 
-@Component
+@Service(value = "help")
 public class Help implements LadminProtocol {
+	@Autowired
+	Map<String, LadminProtocol> ladminProtocolMap;
+
 	@Override
 	public String execute(Map<String, String> map) {
 		StringBuffer sb = new StringBuffer();
 
-		Protocol.getMap().keySet().stream().sorted().forEach(str -> {
+		ladminProtocolMap.keySet().stream().sorted().forEach(str -> {
 			sb.append(Constants.TAG.getValue()).append(" ").append(str).append("\r\n");
 		});
+
+//		Protocol.getMap().keySet().stream().sorted().forEach(str -> {
+//			sb.append(Constants.TAG.getValue()).append(" ").append(str).append("\r\n");
+//		});
 
 		String tag = map.get("tag");
 		String protocol = map.get("protocol");

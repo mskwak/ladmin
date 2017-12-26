@@ -72,7 +72,7 @@ public class LogReader implements Parsable, Traceable, Closeable, Runnable {
 //			getTrace(log);
 //			parse();
 //			setTrace(log);
-			System.out.println(Thread.currentThread().getName() + ":::::::::::::::::::::::::::" + log);
+			//System.out.println(Thread.currentThread().getName() + ":::::::::::::::::::::::::::" + log);
 //
 //			for(long i = 1; i < 30; i++) {
 //				Member member = new Member();

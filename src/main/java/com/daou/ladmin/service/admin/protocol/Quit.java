@@ -2,9 +2,9 @@ package com.daou.ladmin.service.admin.protocol;
 
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service(value = "quit")
 public class Quit implements LadminProtocol {
 
 	@Override

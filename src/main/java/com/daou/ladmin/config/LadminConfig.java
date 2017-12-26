@@ -19,8 +19,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -41,9 +39,9 @@ import lombok.Getter;
 @Lazy
 @EnableJpaRepositories(basePackages="com.daou.ladmin.repository")
 @EnableTransactionManagement
-@PropertySources({
-	@PropertySource("classpath:ladmin-config.properties")
-})
+//@PropertySources({
+//	@PropertySource("classpath:ladmin-config.properties")
+//})
 //Caused by: org.springframework.beans.factory.BeanNotOfRequiredTypeException: Bean named 'logReader' is expected to be of type 'com.daou.ladmin.service.log.LogReader' but was actually of type 'com.sun.proxy.$Proxy49'
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 public class LadminConfig {

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.daou.ladmin.util.SpringBean;
 
+@Deprecated
 public class Protocol {
 	private Protocol() {}
 

@@ -5,11 +5,11 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.daou.ladmin.config.Constants;
 import com.daou.ladmin.service.admin.protocol.LadminProtocol;
-import com.daou.ladmin.service.admin.protocol.Protocol;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -21,6 +21,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 @Component
 public class AdminHandler extends SimpleChannelInboundHandler<String> {
 	private static final Logger logger = LoggerFactory.getLogger(AdminHandler.class);
+
+	@Autowired
+	Map<String, LadminProtocol> ladminProtocolMap;
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -42,9 +45,9 @@ public class AdminHandler extends SimpleChannelInboundHandler<String> {
 			return;
 		}
 
-		String protocolName = map.get("protocol");
-		Map<String, LadminProtocol> protocolMap = Protocol.getMap();
-		LadminProtocol ladminProtocol = null;
+		//String protocolName = map.get("protocol");
+		//Map<String, LadminProtocol> protocolMap = Protocol.getMap();
+		//LadminProtocol ladminProtocol = null;
 
 //		try {
 //			ladminProtocol = protocolMap.keySet()
@@ -59,9 +62,12 @@ public class AdminHandler extends SimpleChannelInboundHandler<String> {
 //			return;
 //		}
 
-		Optional<LadminProtocol> l = protocolMap.keySet().stream()
+		String protocolName = map.get("protocol");
+		LadminProtocol ladminProtocol = null;
+
+		Optional<LadminProtocol> l = ladminProtocolMap.keySet().stream()
 				.filter(str -> protocolName.equals(str))
-				.map(str -> protocolMap.get(str))
+				.map(str -> ladminProtocolMap.get(str))
 				.findAny();
 
 		if(l.isPresent()) {
