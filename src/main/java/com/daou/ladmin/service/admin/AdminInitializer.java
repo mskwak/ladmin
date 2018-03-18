@@ -1,5 +1,7 @@
 package com.daou.ladmin.service.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +10,6 @@ import com.daou.ladmin.config.LadminConfig;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -16,6 +17,7 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 
 @Component
 public class AdminInitializer extends ChannelInitializer<SocketChannel> {
+	private static final Logger logger = LoggerFactory.getLogger(AdminInitializer.class);
 /*	아래 3개의 클래스에 대해서는 @Sharable 지정 불가
  *  io.netty.channel.ChannelPipelineException: io.netty.handler.timeout.ReadTimeoutHandler is not a @Sharable handler, so can't be added or removed multiple times.
  *  @Autowired
@@ -44,13 +46,15 @@ public class AdminInitializer extends ChannelInitializer<SocketChannel> {
 
 	@Override
 	public void initChannel(SocketChannel ch) {
+		logger.info("initChannel");
+
 		ChannelPipeline pipeline = ch.pipeline();
 		pipeline.addLast(new ReadTimeoutHandler(this.ladminConfig.getBossIoTimeout()));
 		pipeline.addLast(new WriteTimeoutHandler(this.ladminConfig.getBossIoTimeout()));
 		//pipeline.addLast(this.test);
-		pipeline.addLast(new LineBasedFrameDecoder(64 * 1024));
+		//pipeline.addLast(new LineBasedFrameDecoder(64 * 1024));
 		pipeline.addLast(this.stringEncoder);
-		pipeline.addLast(this.stringDecoder);
+		//pipeline.addLast(this.stringDecoder);
 		pipeline.addLast(this.adminHandler);
 	}
 }

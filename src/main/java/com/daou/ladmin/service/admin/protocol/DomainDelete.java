@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-@Service
+@Service(value = "domain_delete")
 public class DomainDelete implements LadminProtocol {
 
 	@Override

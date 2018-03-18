@@ -1,5 +1,6 @@
 package com.daou.ladmin.service.admin;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.daou.ladmin.config.Constants;
 import com.daou.ladmin.service.admin.protocol.LadminProtocol;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -19,7 +21,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 @Sharable
 @Component
-public class AdminHandler extends SimpleChannelInboundHandler<String> {
+public class AdminHandler extends SimpleChannelInboundHandler<ByteBuf> {
 	private static final Logger logger = LoggerFactory.getLogger(AdminHandler.class);
 
 	@Autowired
@@ -30,8 +32,21 @@ public class AdminHandler extends SimpleChannelInboundHandler<String> {
 		ctx.writeAndFlush(LadminProtocol.getResponse(Constants.GREETING_MESSAGE));
 	}
 
+// NullPointerException occured. why?
+//	static {
+//		Map<String, LadminProtocol> m = SpringBean.getBeansOfType(LadminProtocol.class);
+//		Optional<String> longestString = m.keySet().stream().max(Comparator.comparingInt(String::length));
+//		System.out.println("longestString:" + longestString);
+//	}
+
 	@Override
-	public void channelRead0(ChannelHandlerContext ctx, String command) throws Exception {
+	public void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) throws Exception {
+		String command = byteBuf.toString(StandardCharsets.UTF_8);
+
+		int x = LadminProtocol.getProtocolNameLength();
+
+		System.out.println("x: " + x);
+
 
 //		if(command.isReadable()) {
 //			System.out.println("oooooooooooooookkkkkkkkkkkkkkkkkkk");

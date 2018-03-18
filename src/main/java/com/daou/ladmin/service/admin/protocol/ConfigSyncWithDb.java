@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-@Service
+@Service(value = "config_syncwithdb")
 public class ConfigSyncWithDb implements LadminProtocol {
 
 	@Override

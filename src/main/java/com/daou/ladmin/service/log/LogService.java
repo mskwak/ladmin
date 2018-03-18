@@ -17,7 +17,7 @@ public class LogService implements LadminService {
 	private ExecutorService executorService;
 
 	@Autowired
-	private LogReader logReader;
+	private LogHandler logReader;
 
 	@Override
 	public void startService() {

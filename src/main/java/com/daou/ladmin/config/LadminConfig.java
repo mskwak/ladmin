@@ -220,7 +220,7 @@ public class LadminConfig {
 
 		// 이 클래스는 테이블 명이나 컬럼 명이 생략되면 자바의 카멜 표기법을 테이블의 언더스코어 표기법으로 매핑한다.
 		// -> 설정이 안 먹힌다.
-		//jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
+		jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
 		//jpaProperties.put("hibernate.ejb.naming_strategy", "ImprovedNamingStrategy.INSTANCE");
 
 		// JPA 표준에 맞춘 새로운 키 생성 전략을 사용한다.
@@ -232,7 +232,7 @@ public class LadminConfig {
 		// update: 데이터베이스 테이블과 엔티티 매핑정보를 비교해서 변경 사항만 수정한다.
 		// validate: 데이터베이스 테이블과 엔티티 매핑정보를 비교해서 차이가 있으면 경고를 남기고 애플리케이션을 실행하지 않는다. 이 설정은 DDL을 수정하지 않는다.
 		// none: 자동 생성기능을 사용하지 않는다.
-		jpaProperties.put("hibernate.hbm2ddl.auto", "create");
+		jpaProperties.put("hibernate.hbm2ddl.auto", "validate");
 
 		LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		localContainerEntityManagerFactoryBean.setDataSource(this.dataSource());

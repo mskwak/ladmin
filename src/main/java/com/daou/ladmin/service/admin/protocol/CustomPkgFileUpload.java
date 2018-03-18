@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-@Service
+@Service(value = "custom_pkg_file_upload")
 public class CustomPkgFileUpload implements LadminProtocol {
 
 	@Override

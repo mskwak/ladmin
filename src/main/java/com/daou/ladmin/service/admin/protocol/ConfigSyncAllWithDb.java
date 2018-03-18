@@ -2,9 +2,9 @@ package com.daou.ladmin.service.admin.protocol;
 
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service(value = "config_syncallwithdb")
 public class ConfigSyncAllWithDb implements LadminProtocol {
 
 	@Override

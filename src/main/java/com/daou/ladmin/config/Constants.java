@@ -8,7 +8,7 @@ public enum Constants {
 	CRLF("\r\n"),
 	VERSION("1.0"),
 	//GREETING("sf_ladmd dbagt service ready protocol-version:"),
-	GREETING_MESSAGE("* OK greeting sf_ladmd dbagt service ready protocol-version:1.0"),
+	GREETING_MESSAGE("* OK greeting sf_ladmd dbagt service ready spring boot version:2.0"),
 	TIMEOUT_MESSAGE("request timeout. server die."),
 	INVALID_COMMAND("invalid command.");
 
